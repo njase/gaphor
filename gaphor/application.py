@@ -138,8 +138,7 @@ class Application(Service, ActionProvider):
             session for session in self._sessions if session.filename == filename
         )
 
-    def shutdown_session(self, session):
-        assert session
+    def shutdown_session(self, session: Session):
         session.shutdown()
         self._sessions.discard(session)
         if session is self._active_session:
