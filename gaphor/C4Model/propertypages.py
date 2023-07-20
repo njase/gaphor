@@ -20,7 +20,6 @@ class DescriptionPropertyPage(PropertyPageBase):
 
     def __init__(self, subject: Union[c4model.C4Container, c4model.C4Person]):
         super().__init__()
-        assert subject
         self.subject = subject
         self.watcher = subject.watcher()
 
@@ -61,7 +60,6 @@ class TechnologyPropertyPage(PropertyPageBase):
 
     def __init__(self, subject: c4model.C4Container):
         super().__init__()
-        assert subject
         self.subject = subject
 
     def construct(self):
