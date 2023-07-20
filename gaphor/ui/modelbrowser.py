@@ -125,15 +125,12 @@ class ModelBrowser(UIComponent, ActionProvider):
         return select_element(self.tree_view, element)
 
     def get_selected_elements(self) -> list[Element]:
-        assert self.model
         return get_selected_elements(self.selection)
 
     def get_selected_element(self) -> Element | None:
-        assert self.model
         return next(iter(self.get_selected_elements()), None)
 
-    def open_element(self, element):
-        assert element
+    def open_element(self, element: Element):
         if isinstance(element, Diagram):
             self.event_manager.handle(DiagramOpened(element))
         else:
@@ -142,7 +139,8 @@ class ModelBrowser(UIComponent, ActionProvider):
     @action(name="tree-view.open")
     def tree_view_open_selected(self):
         element = self.get_selected_element()
-        self.open_element(element)
+        if element:
+            self.open_element(element)
 
     @action(name="tree-view.show-in-diagram")
     def tree_view_show_in_diagram(self, diagram_id: str) -> None:
