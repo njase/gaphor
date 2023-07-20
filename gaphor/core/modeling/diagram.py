@@ -280,7 +280,7 @@ class Diagram(Element):
         style_sheet = self.styleSheet
         return style_sheet.match(node) if style_sheet else FALLBACK_STYLE
 
-    def gettext(self, message):
+    def gettext(self, message: str) -> str:
         """Translate a message to the language used in the model."""
         style_sheet = self.styleSheet
         if style_sheet and style_sheet.naturalLanguage:
@@ -293,7 +293,12 @@ class Diagram(Element):
         self._order_owned_presentation()
         super().postload()
 
-    def create(self, type, parent=None, subject=None):
+    def create(
+        self,
+        type: type[P],
+        parent: Presentation | None = None,
+        subject: Element | None = None,
+    ) -> P:
         """Create a new diagram item on the diagram.
 
         It is created with a unique ID, and it is attached to the
@@ -304,7 +309,13 @@ class Diagram(Element):
 
         return self.create_as(type, generate_id(), parent, subject)
 
-    def create_as(self, type, id, parent=None, subject=None):
+    def create_as(
+        self,
+        type: type[P],
+        id: Id,
+        parent: Presentation | None = None,
+        subject: Element | None = None,
+    ) -> P:
         assert isinstance(self.model, PresentationRepositoryProtocol)
         item = self.model.create_as(type, id, diagram=self)
         if not isinstance(item, gaphas.Item):
@@ -316,12 +327,10 @@ class Diagram(Element):
         self.request_update(item)
         return item
 
-    def lookup(self, id):
-        for item in self.get_all_items():
-            if item.id == id:
-                return item
+    def lookup(self, id: Id) -> Presentation | None:
+        return next((item for item in self.get_all_items() if item.id == id), None)
 
-    def unlink(self):
+    def unlink(self) -> None:
         """Unlink all canvas items then unlink this diagram."""
         for item in self.ownedPresentation:
             self.connections.remove_connections_to_item(item)
@@ -414,5 +423,5 @@ class Diagram(Element):
 
 @runtime_checkable
 class PresentationRepositoryProtocol(Protocol):
-    def create_as(self, type: type[P], id: str, diagram: Diagram) -> P:
+    def create_as(self, type: type[P], id: Id, diagram: Diagram) -> P:
         ...

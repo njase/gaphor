@@ -48,7 +48,7 @@ def uuid_generator():
 _generator: Iterator[str] = uuid_generator()
 
 
-def generate_id(generator=None):
+def generate_id(generator=None) -> Id:
     global _generator
     if generator:
         _generator = generator
