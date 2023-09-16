@@ -13,7 +13,6 @@ from gaphor.diagram.propertypages import (
     new_resource_builder,
     new_builder as diagram_new_builder,
     handler_blocking,
-    on_text_cell_edited,
     unsubscribe_all_on_destroy,
 )
 from gaphor.i18n import translated_ui_string
@@ -229,4 +228,3 @@ class ActivityParameterNodeNamePropertyPage(PropertyPageBase):
     def _on_name_changed(self, entry):
         if self.subject.parameter.name != entry.get_text():
             self.subject.parameter.name = entry.get_text()
-
